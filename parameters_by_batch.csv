@@ -1,0 +1,8 @@
+dataset,total_counts_min,total_counts_max,n_genes_by_counts_min,n_genes_by_counts_max,pct_counts_mt_min,pct_counts_mt_max,doublet_score_max,n_top_genes,mean_neighbor_distance_max,n_top_genes,n_pcs,n_neighbors,cell_cycle_regression,resolutions
+wildtype_rep1,3500,40000,1400,8000,1,7.5,0.1,2000,0.012,2000,20,15,true,"[0.1,0.2,0.5,1]"
+wildtype_rep2,7000,40000,2400,8000,1,7.5,0.1,2000,0.03,2000,20,15,true,"[0.05,0.3,0.5,0.7]"
+wildtype_rep3,4000,40000,1800,8000,1,7.5,0.1,2000,0.014,2000,20,15,true,"[0.2,0.5,1]"
+T_mutant_rep1,6000,40000,2000,8000,1,7.5,0.1,2000,0.0175,2000,20,15,true,"[0.1,0.2,0.5]"
+T_mutant_rep2,5500,40000,2000,8000,1,7.5,0.1,2000,0.015,2000,20,15,true,"[0.2,0.5,1]"
+Eomes_mutant_rep1,6500,40000,2200,8000,1,7.5,0.1,2000,0.03,2000,20,15,true,"[0.1,0.5,1]"
+Eomes_mutant_rep2,4000,40000,2000,8000,1,7.5,0.1,2000,0.0175,2000,20,15,true,"[0.1,0.5]"

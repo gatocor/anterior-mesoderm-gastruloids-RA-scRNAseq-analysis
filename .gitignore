@@ -1,0 +1,8 @@
+__pycache__/
+data/
+data_other_studies/
+data_processed/
+figures/
+script_versions/
+tables/
+scmappy.py

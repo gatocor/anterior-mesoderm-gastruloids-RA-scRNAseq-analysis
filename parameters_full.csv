@@ -1,0 +1,2 @@
+dataset,n_top_genes,n_top_genes,n_pcs,n_neighbors,cell_cycle_regression,resolutions
+full,2000,2000,30,15,true,"[0.1,0.2,0.5,1]"

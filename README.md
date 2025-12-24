@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/1017566638.svg)](https://doi.org/10.5281/zenodo.18045898)
+
 # Anterior Mesoderm Gastruloids RA - Single Cell RNA-seq Analysis
 
 This project contains single-cell RNA sequencing (scRNA-seq) analysis of mouse embryonic samples comparing wildtype, T-mutant, and Eomes-mutant conditions across multiple biological replicates.

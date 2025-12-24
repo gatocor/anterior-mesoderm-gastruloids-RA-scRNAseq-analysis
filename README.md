@@ -1,183 +1,161 @@
-# Updates
+# Anterior Mesoderm Gastruloids RA - Single Cell RNA-seq Analysis
 
- - 16/05/2025:
-   - ADD to full analysis: Added UMAP plot with color code by condition. Highlight Wildtype+T_mutant and Wildtype+Eomes_mutant.
-   - ADD projection analysis: Added projection to Susannes dataset
+This project contains single-cell RNA sequencing (scRNA-seq) analysis of mouse embryonic samples comparing wildtype, T-mutant, and Eomes-mutant conditions across multiple biological replicates.
 
-# Analysis by Batch
+## Project Structure
 
-## Plots
+```
+.
+├── data/                          # Raw data files
+│   ├── Eomes_mutant/             # Eomes mutant raw data
+│   ├── T_mutant/                 # T mutant raw data
+│   └── wildtype/                 # Wildtype raw data
+├── data_other_studies/           # External datasets for comparison
+│   ├── pijuan/
+│   ├── prisca/
+│   └── susanne/
+├── data_processed/               # Processed h5ad objects
+│   ├── adata_*.h5ad             # Individual sample and merged datasets
+├── figures/                      # Generated plots and visualizations
+├── tables/                       # Differential expression results
+├── script_versions/              # Archived HTML versions of analysis scripts
+├── analysis_*.ipynb              # Analysis notebooks
+├── annotations.csv               # Cell type marker annotations
+├── markers.csv                   # Marker gene list
+├── gene_list*.csv               # Gene lists for analysis
+├── pathways.json                # Pathway definitions
+├── parameters_*.csv             # Analysis parameters
+├── environment.yml              # Conda environment specification
+└── README.md                    # This file
+```
 
-### QC Metrics
+## Experimental Design
 
-1. **Total counts**: 
-   - Histogram of total counts per cell.
-   - Red vertical line indicates the minimum threshold.
-   - Green vertical line indicates the maximum threshold.
-   - Saved as `figures/{dataset_name}/qc_metrics.png`.
+The project analyzes three experimental conditions:
+- **Wildtype**: Control samples (3 replicates)
+- **T_mutant**: T gene mutant (2 replicates)
+- **Eomes_mutant**: Eomes gene mutant (2 replicates)
 
-2. **Number of genes by counts**:
-   - Histogram of the number of genes detected per cell.
-   - Red vertical line indicates the minimum threshold.
-   - Green vertical line indicates the maximum threshold.
-   - Saved as `figures/{dataset_name}/qc_metrics.png`.
+## Analysis Workflows
 
-3. **Percent counts mitochondrial**:
-   - Histogram of the percentage of mitochondrial counts per cell.
-   - Red vertical line indicates the minimum threshold.
-   - Green vertical line indicates the maximum threshold.
-   - Saved as `figures/{dataset_name}/qc_metrics.png`.
+### Main Analysis Notebooks
 
-4. **QC Metrics Scatterplot**:
-   - Scatterplot of total counts vs. number of genes by counts, colored by the percentage of mitochondrial counts.
-   - Saved as `figures/{dataset_name}/qc_metrics_scatterplot.png`.
+1. **`create_h5ad.ipynb`**: Initial data processing and h5ad object creation
+2. **`analysis_full.ipynb`**: Comprehensive analysis of merged dataset
+3. **`analysis_by_condition.ipynb`**: Condition-specific analysis
+4. **`analysis_by_batch.ipynb`**: Batch-wise analysis
+5. **`analysis_projection.ipynb`**: Data projection analysis
+6. **`analysis_projection_time.ipynb`**: Temporal projection analysis
+7. **`analysis_scenic.ipynb`**: Gene regulatory network analysis using SCENIC
 
-### Doublets
+### Setup Notebooks
 
-1. **Doublet Score**:
-   - UMAP plots showing doublet scores.
-   - Saved as `figures/{dataset_name}/doublet_score.png`.
+- **`setup_external_datasets.ipynb`**: Import and process external datasets
+- **`setup_priscas_data.ipynb`**: Process Prisca's dataset
 
-### Outliers
+## Analysis Pipeline
 
-1. **Mean Neighbor Distance**:
-   - Histogram of mean neighbor distances.
-   - Red vertical line indicates the maximum threshold.
-   - Saved as `figures/{dataset_name}/mean_neighbor_distance.png`.
+The standard analysis pipeline includes:
 
-2. **Mean Neighbor Distance Scatterplot**:
-   - UMAP plots showing mean neighbor distances.
-   - Saved as `figures/{dataset_name}/mean_neighbor_distance_scatterplot.png`.
+1. **Quality Control (QC)**
+   - Cell filtering based on counts, genes detected, and mitochondrial content
+   - Visualization of QC metrics
 
-### Dimensionality Reduction
+2. **Normalization**
+   - Total count normalization
+   - Log transformation
 
-1. **Highly Variable Genes**:
-   - Scatterplots showing highly variable genes.
-   - Saved as `figures/{dataset_name}/highly_variable_genes.png`.
+3. **Dimensionality Reduction**
+   - Highly variable gene selection (top 2000 genes)
+   - PCA (30 components)
+   - UMAP visualization
 
-2. **PCA Variance Ratio**:
-   - Line plot of PCA variance ratios.
-   - Red vertical line indicates the selected number of PCs.
-   - Saved as `figures/{dataset_name}/pca_variance_ratio.png`.
+4. **Batch Correction**
+   - Harmony integration across samples
+   - Cell cycle regression (optional)
 
-3. **UMAP from PCA**:
-   - UMAP plots from PCA.
-   - Saved as `figures/{dataset_name}/umap_pca_vs_pca_phase.png`.
+5. **Clustering**
+   - Leiden clustering at multiple resolutions (0.1, 0.2, 0.5, 1.0)
+   - Cluster annotation using marker genes
 
-### Clustering
+6. **Differential Expression Analysis**
+   - Wilcoxon rank-sum test
+   - Results exported to Excel files
 
-1. **Leiden Clustering**:
-   - UMAP plots showing Leiden clustering at different resolutions.
-   - Saved as `figures/{dataset_name}/leiden_{resolution}.png`.
+7. **Pathway Enrichment**
+   - Decoupler ULM analysis
+   - Pathway activity scores
 
-## Tables
+8. **Comparative Analysis**
+   - Cross-condition comparisons
+   - Cluster composition analysis
 
-### Differential Expression
+## Key Parameters
 
-- Excel files containing differential expression results for each cluster at different resolutions.
-- Saved as `tables/{dataset_name}/leiden_{resolution}.xlsx`.
+Default parameters (from `parameters_full.csv`):
+- **n_top_genes**: 2000
+- **n_pcs**: 30
+- **n_neighbors**: 15
+- **cell_cycle_regression**: true
+- **resolutions**: [0.1, 0.2, 0.5, 1]
 
-## HTML
+## Dependencies
 
-### Analysis Script
+The project uses a conda environment specified in `environment.yml`. Key packages include:
+- scanpy: Single-cell analysis
+- anndata: Annotated data matrices
+- matplotlib/seaborn: Visualization
+- pandas/numpy: Data manipulation
+- decoupler: Pathway enrichment analysis
+- harmonypy: Batch correction
 
-- HTML version of the analysis notebook.
-- Saved as `script_versions/analysis_by_batch_{dataset[1]}_{dataset[2]}_{current_date}.html`.
+## Setup
 
-## Adata Object
+1. Create the conda environment:
+```bash
+conda env create -f environment.yml
+conda activate scrnaseq_vitamin_a
+```
 
-- Processed AnnData object.
-- Saved as `data_processed/adata_{dataset_name}.h5ad`.
+2. Launch Jupyter:
+```bash
+jupyter notebook
+```
 
-# Analysis by Condition
+3. Run the analysis notebooks in order
 
-## Plots
+## Outputs
 
-### QC Metrics
-- **qc_metrics.png**: Histograms showing the distribution of total counts, number of genes by counts, and percent counts mitochondrial. Vertical lines indicate the minimum and maximum thresholds for each metric.
-- **qc_metrics_scatterplot.png**: Scatter plot of total counts vs. number of genes by counts, colored by percent counts mitochondrial.
+### Figures
+Generated visualizations are saved in `figures/` organized by dataset:
+- UMAP plots
+- QC plots
+- Marker dotplots and heatmaps
+- Differential expression visualizations
+- Cluster composition plots
 
-### Doublets
-- **doublet_score.png**: UMAP plots showing the doublet scores and a binary classification of doublets based on a threshold.
+### Tables
+Differential expression results in `tables/` as Excel files with one sheet per cluster
 
-### Outliers
-- **mean_neighbor_distance.png**: Histogram of mean neighbor distances with a vertical line indicating the maximum threshold.
-- **mean_neighbor_distance_scatterplot.png**: UMAP plots showing the mean neighbor distances and a binary classification of outliers based on a threshold.
+### Script Versions
+HTML exports of executed notebooks with timestamps in `script_versions/`
 
-### Highly Variable Genes
-- **highly_variable_genes.png**: Scatter plots showing the mean vs. dispersion and mean vs. normalized dispersion for highly variable genes.
+## Helper Modules
 
-### PCA
-- **pca_variance_ratio.png**: Line plot showing the variance ratio explained by each principal component. A vertical line indicates the selected number of principal components.
+- **`auxiliar.py`**: Custom helper functions for visualization and analysis
+- **`scmap.py`**: Single-cell mapping utilities
 
-### UMAP
-- **umap_pca_vs_pca_phase.png**: UMAP plots comparing the original PCA and PCA corrected for cell cycle effects.
+## Configuration Files
 
-### Clustering
-- **leiden_{resolution}.png**: UMAP plots showing the Leiden clustering results for different resolutions.
+- **`annotations.csv`**: Cell type marker gene definitions
+- **`markers.csv`**: Curated marker gene list
+- **`pathways.json`**: Pathway gene sets
+- **`renumbering_leiden.json`**: Cluster renumbering map
+- **`cell_cycle_G1_S.txt`**: G1/S phase genes
+- **`cell_cycle_G2_M.txt`**: G2/M phase genes
 
-### Density by Sample
-- **clustermap_leiden_{resolution}.png**: Scatter plots showing the number of cells per sample and Leiden cluster, normalized by sample and cluster.
+## Notes
 
-### Analysis by Condition
-- **violin_plots.png**: Violin plots showing the distribution of total counts, number of genes by counts, and percent counts mitochondrial for each sample.
-- **umap_pca_vs_pca_sample.png**: UMAP plots comparing the original PCA and PCA corrected for batch effects.
-- **umap_pca_vs_pca_phase.png**: UMAP plots comparing the original PCA and PCA corrected for cell cycle effects.
-
-## Tables
-
-### Differential Expression
-- **leiden_{resolution}.xlsx**: Excel files containing the differential expression results for each Leiden cluster at different resolutions. Each sheet corresponds to a cluster and includes the gene names, scores, log fold changes, p-values, and adjusted p-values.
-
-## HTML
-
-### Analysis Script
-- **script_versions/analysis_by_condition_{dataset_name}_{current_date}.html**: HTML version of the analysis script for condition analysis.
-
-## Data
-
-### Processed Data
-- **data_processed/adata_{dataset_name}.h5ad**: Processed AnnData object saved in HDF5 format.
-
-# Analysis Full
-
-## Plots
-
-### QC Metrics
-- **qc_metrics.png**: Histograms showing the distribution of total counts, number of genes by counts, and percent counts mitochondrial. Vertical lines indicate the minimum and maximum thresholds for each metric.
-- **qc_metrics_scatterplot.png**: Scatter plot of total counts vs. number of genes by counts, colored by percent counts mitochondrial.
-
-### Doublets
-- **doublet_score.png**: UMAP plots showing the doublet scores and a binary classification of doublets based on a threshold.
-
-### Outliers
-- **mean_neighbor_distance.png**: Histogram of mean neighbor distances with a vertical line indicating the maximum threshold.
-- **mean_neighbor_distance_scatterplot.png**: UMAP plots showing the mean neighbor distances and a binary classification of outliers based on a threshold.
-
-### Highly Variable Genes
-- **highly_variable_genes.png**: Scatter plots showing the mean vs. dispersion and mean vs. normalized dispersion for highly variable genes.
-
-### PCA
-- **pca_variance_ratio.png**: Line plot showing the variance ratio explained by each principal component. A vertical line indicates the selected number of principal components.
-
-### UMAP
-- **umap_pca_vs_pca_phase.png**: UMAP plots comparing the original PCA and PCA corrected for cell cycle effects.
-
-### Clustering
-- **leiden_{resolution}.png**: UMAP plots showing the Leiden clustering results for different resolutions.
-
-### Density by Sample
-- **clustermap_leiden_{resolution}.png**: Scatter plots showing the number of cells per sample and Leiden cluster, normalized by sample and cluster.
-
-### Density by Condition
-- **clustermap_leiden_{resolution}.png**: Scatter plots showing the number of cells per condition and Leiden cluster, normalized by sample and cluster.
-
-## Tables
-
-### Differential Expression
-- **leiden_{resolution}.xlsx**: Excel files containing the differential expression results for each Leiden cluster at different resolutions. Each sheet corresponds to a cluster and includes the gene names, scores, log fold changes, p-values, and adjusted p-values.
-
-## HTML
-
-### Analysis Script
-- **script_versions/analysis_full_{current_date}.html**: HTML version of the analysis script for full dataset analysis.
+- All analysis scripts automatically create output directories if they don't exist
+- Processed data objects (h5ad) are saved after major processing steps
+- Analysis versions are archived with timestamps for reproducibility

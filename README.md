@@ -8,27 +8,32 @@ This project contains single-cell RNA sequencing (scRNA-seq) analysis of mouse e
 
 ```
 .
-├── data/                          # Raw data files
-│   ├── Eomes_mutant/             # Eomes mutant raw data
-│   ├── T_mutant/                 # T mutant raw data
-│   └── wildtype/                 # Wildtype raw data
-├── data_other_studies/           # External datasets for comparison
+├── data/                              # Aligned Raw data files to be downloaded from the deposited source
+│   ├── adata_Eomes_mutant_rep1.h5ad
+│   ├── adata_Eomes_mutant_rep2.h5ad
+│   ├── adata_T_mutant_rep1.h5ad
+│   ├── adata_T_mutant_rep2.h5ad
+│   ├── adata_wildtype_rep1.h5ad
+│   ├── adata_wildtype_rep2.h5ad
+│   └── adata_wildtype_rep3.h5ad
+├── data_other_studies/                # External datasets for comparison
 │   ├── pijuan/
 │   ├── prisca/
 │   └── susanne/
-├── data_processed/               # Processed h5ad objects
-│   ├── adata_*.h5ad             # Individual sample and merged datasets
-├── figures/                      # Generated plots and visualizations
-├── tables/                       # Differential expression results
-├── script_versions/              # Archived HTML versions of analysis scripts
-├── analysis_*.ipynb              # Analysis notebooks
-├── annotations.csv               # Cell type marker annotations
-├── markers.csv                   # Marker gene list
-├── gene_list*.csv               # Gene lists for analysis
-├── pathways.json                # Pathway definitions
-├── parameters_*.csv             # Analysis parameters
-├── environment.yml              # Conda environment specification
-└── README.md                    # This file
+├── data_processed/                    # Processed h5ad objects
+│   ├── adata_*.h5ad                   # Individual sample and merged datasets
+├── figures/                           # Generated plots and visualizations
+├── tables/                            # Differential expression results
+├── script_versions/                   # Archived HTML versions of analysis scripts
+├── analysis_*.ipynb                   # Analysis notebooks
+├── annotations.csv                    # Cell type marker annotations
+├── markers.csv                        # Marker gene list
+├── gene_list*.csv                     # Gene lists for analysis
+├── pathways.json                      # Pathway definitions
+├── parameters_*.csv                   # Analysis parameters
+├── environment_legacy.yml             # Conda environment specification with the full package set and specific versions used to run the code (only for legacy)
+├── environment.yml.                   # Conda environment specification with only the explicitely installed packages (for any platform, RECOMENDED)
+└── README.md                          # This file
 ```
 
 ## Experimental Design

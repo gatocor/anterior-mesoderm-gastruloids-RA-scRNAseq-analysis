@@ -1,5 +1,6 @@
 __pycache__/
-data/
+data/*
+!data/.gitkeep
 data_other_studies/
 data_processed/
 figures/
